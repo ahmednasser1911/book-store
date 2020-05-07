@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getUserBooks  , deleteBook} from "../../actions/books";
 import Spinner from "../layout/Spinner";
-const Cart = ({ books: { myBooks, loading }, getUserBooks , deleteBook}) => {
+const Cart = ({ books: { myBooks, loading }, auth : {user},  getUserBooks , deleteBook}) => {
   useEffect(() => {
     getUserBooks();
   }, [getUserBooks, loading]);
@@ -19,6 +19,11 @@ const Cart = ({ books: { myBooks, loading }, getUserBooks , deleteBook}) => {
   }
   return (
     <div className='container'>
+      <div className = "card card-body mb-2 p-2">
+        <h3 className = "display-6 text-center text-info">
+            <i className = "fa fa-user"></i> Welcome {user.name}
+        </h3>
+      </div>
       <div className = "card card-body mb-2 p-2">
         <h3 className = "display-6 text-center text-info">
             <i className = "fa fa-book"></i> You have added {prices(myBooks)[1]} books!
@@ -92,10 +97,12 @@ const Cart = ({ books: { myBooks, loading }, getUserBooks , deleteBook}) => {
 
 Cart.propTypes = {
   books: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
   books: state.books,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { getUserBooks , deleteBook})(Cart);
